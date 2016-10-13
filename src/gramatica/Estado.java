@@ -4,31 +4,31 @@ import java.util.ArrayList;
 
 public class Estado {
 
-    private boolean eNaoTerminal;
     private boolean eTerminal;
+    private boolean eNaoTerminal;
 
     private String representacao;
 
     private ArrayList<RegraProducao> regras;
 
-    public Estado() { transicoes = new ArrayList<>(); }
+    public Estado() { regras = new ArrayList<>(); }
 
-    public Estado(boolean eInicial, boolean eFinal, String representacao, ArrayList<Transicao> transicoes) {
-        this.eInicial = eInicial;
-        this.eFinal = eFinal;
+    public Estado(boolean eNaoTerminal, boolean eTerminal, String representacao, ArrayList<RegraProducao> regras) {
+        this.eTerminal = eTerminal;
+        this.eNaoTerminal = eNaoTerminal;
         this.representacao = representacao;
-        this.transicoes = transicoes;
+        this.regras = regras;
     }
 
-    public boolean iseInicial() { return eInicial; }
-    public void seteInicial(boolean eInicial) { this.eInicial = eInicial; }
+    public boolean iseTerminal() { return eTerminal; }
+    public void seteTerminal(boolean eTerminal) { this.eTerminal = eTerminal; }
 
-    public ArrayList<Transicao> getTransicoes() { return transicoes; }
-    public void setTransicoes(Transicao t) { this.transicoes.add(t); }
+    public boolean iseNaoTerminal() { return eNaoTerminal; }
+    public void seteNaoTerminal(boolean eNaoTerminal) { this.eNaoTerminal = eNaoTerminal; }
+
+    public ArrayList<RegraProducao> getRegras() { return regras; }
+    public void setTransicoes(RegraProducao t) { this.regras.add(t); }
 
     public String getRepresentacao() { return representacao; }
     public void setRepresentacao(String representacao) { this.representacao = representacao; }
-
-    public boolean iseFinal() { return eFinal; }
-    public void seteFinal(boolean eFinal) { this.eFinal = eFinal; }
 }

@@ -14,19 +14,14 @@ public class Gramatica {
     private String txtEntrada;
 
     private String[] entrada;
-    //private Estado[] estados;
 
     public Gramatica(){}
 
     public Gramatica(String txtAlfabetoT, String txtAlfabetoNT, String txtRegrasDeProducao, String txtEntrada) {
-        this.txtAlfabeto = txtAlfabeto;
-        this.qtdEstados = qtdEstados;
-        this.txtTransicoes = txtTransicoes;
-        this.txtInicial = txtInicial;
-        this.txtFinais = txtFinais;
+        this.txtAlfabetoT = txtAlfabetoT;
+        this.txtAlfabetoNT = txtAlfabetoNT;
+        this.txtRegrasDeProducao = txtRegrasDeProducao;
         this.txtEntrada = txtEntrada;
-        entrada = txtEntrada.split("/");
-        estados = new Estado[qtdEstados + 1];
 
         eIvalido = false;
         saida = 0;
@@ -60,11 +55,7 @@ public class Gramatica {
      * Determina o estado inicial e o conjunto de estados finais
      */
     public void setValores () {
-        /*for (int i = 1; i <= qtdEstados; i++) {
-            estados[i] = new Estado();
-            estados[i].setRepresentacao(Integer.toString(i));
-        }*/
-
+        /*
         for (String transicao : txtTransicoes.split(",")) {
             String[] elementosTransicao = transicao.split("/");
 
@@ -78,12 +69,14 @@ public class Gramatica {
         for (String terminal : txtFinais.split(",")) {
             estados[Integer.parseInt(terminal)].seteFinal(true);
         }
+        */
     }
 
     /**
      * Verifica se a entrada leva a um estado final válido
      */
     public String verificacao() {
+        /*
         this.setValores();
         String resultado = "";
 
@@ -115,9 +108,8 @@ public class Gramatica {
         resultado+="\n" + (eIvalido ? "Estado invalido" : "Estado Final: " + estadoAtual.getRepresentacao());
         resultado+="\nSaida: " + saida;
         return resultado;
+        */
+        return "";
     }
-
-    public int getQtdEstados() {return qtdEstados;}
-    public Estado[] getEstados() {return estados;}
 
 }
