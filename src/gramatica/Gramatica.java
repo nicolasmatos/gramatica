@@ -1,8 +1,8 @@
 package gramatica;
 
-public class Gramatica {
+import java.util.ArrayList;
 
-    //private Estado estadoAtual;
+public class Gramatica {
 
     private boolean eIvalido;
 
@@ -12,8 +12,9 @@ public class Gramatica {
     private String txtAlfabetoNT;
     private String txtRegrasDeProducao;
     private String txtEntrada;
-
     private String[] entrada;
+    
+    private ArrayList<Estado> estados;
 
     public Gramatica(){}
 
@@ -55,21 +56,13 @@ public class Gramatica {
      * Determina o estado inicial e o conjunto de estados finais
      */
     public void setValores () {
-        /*
-        for (String transicao : txtTransicoes.split(",")) {
-            String[] elementosTransicao = transicao.split("/");
-
-            Transicao t = new Transicao(elementosTransicao[1], estados[Integer.parseInt(elementosTransicao[2])]);
-            estados[Integer.parseInt(elementosTransicao[0])].setTransicoes(t);
+        
+        String[] alfabetoT = txtAlfabetoT.split(",");
+        String[] alfabetoNT = txtAlfabetoNT.split(",");
+        char[] regras = txtRegrasDeProducao.toCharArray(); 
+        for (int i=0; i<regras.length; i++) {
+            System.out.println(regras[i]+" ");
         }
-
-        estados[Integer.parseInt(txtInicial)].seteInicial(true);
-        estadoAtual = estados[Integer.parseInt(txtInicial)];
-
-        for (String terminal : txtFinais.split(",")) {
-            estados[Integer.parseInt(terminal)].seteFinal(true);
-        }
-        */
     }
 
     /**

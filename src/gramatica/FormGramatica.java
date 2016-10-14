@@ -2,14 +2,14 @@ package gramatica;
 
 import gramatica.Gramatica;
 
-public class FormAutomato extends javax.swing.JFrame {
+public class FormGramatica extends javax.swing.JFrame {
 
-    public FormAutomato() {
+    public FormGramatica() {
         initComponents();
     }
 
     public static void main(String[] args) {
-        FormAutomato f = new FormAutomato();
+        FormGramatica f = new FormGramatica();
         f.setVisible(true);
         f.setTitle("Verificar gramática");
         f.setResizable(false);
@@ -119,9 +119,9 @@ public class FormAutomato extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblAlfabeto)
                             .addComponent(jtxtAlfabetoT, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -129,19 +129,17 @@ public class FormAutomato extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblQtdEstados)
                             .addComponent(jtxtAlfabetoNT, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jtxtRegrasDeProducao)
-                            .addComponent(jtxtEntrada)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblEntrada)
-                                    .addComponent(lblTransicoes))
-                                .addGap(199, 199, 199))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jbtExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jtxtRegrasDeProducao)
+                        .addComponent(jtxtEntrada)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblEntrada)
+                                .addComponent(lblTransicoes))
+                            .addGap(199, 199, 199))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jbtExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, Short.MAX_VALUE))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 18, Short.MAX_VALUE))
@@ -189,6 +187,7 @@ public class FormAutomato extends javax.swing.JFrame {
     private void jbtExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExecutarActionPerformed
         Gramatica g  = new Gramatica(jtxtAlfabetoT.getText(), jtxtAlfabetoNT.getText(), jtxtRegrasDeProducao.getText(), jtxtEntrada.getText());
         jtxaResultado.setText(g.verificacao());
+        g.setValores();
     }//GEN-LAST:event_jbtExecutarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
