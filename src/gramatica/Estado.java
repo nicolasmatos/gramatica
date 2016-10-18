@@ -7,13 +7,13 @@ public class Estado {
     private boolean eTerminal;
     private boolean eNaoTerminal;
 
-    private String representacao;
+    private char representacao;
 
     private ArrayList<RegraProducao> regras;
 
     public Estado() { regras = new ArrayList<>(); }
 
-    public Estado(boolean eNaoTerminal, boolean eTerminal, String representacao, ArrayList<RegraProducao> regras) {
+    public Estado(boolean eNaoTerminal, boolean eTerminal, char representacao, ArrayList<RegraProducao> regras) {
         this.eTerminal = eTerminal;
         this.eNaoTerminal = eNaoTerminal;
         this.representacao = representacao;
@@ -29,6 +29,8 @@ public class Estado {
     public ArrayList<RegraProducao> getRegras() { return regras; }
     public void setTransicoes(RegraProducao t) { this.regras.add(t); }
 
-    public String getRepresentacao() { return representacao; }
-    public void setRepresentacao(String representacao) { this.representacao = representacao; }
+    public char getRepresentacao() { return representacao; }
+    public void setRepresentacao(char representacao) { this.representacao = representacao; }
+    
+    
 }

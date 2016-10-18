@@ -23,6 +23,7 @@ public class Gramatica {
         this.txtAlfabetoNT = txtAlfabetoNT;
         this.txtRegrasDeProducao = txtRegrasDeProducao;
         this.txtEntrada = txtEntrada;
+        estados = new ArrayList<Estado>();
 
         eIvalido = false;
         saida = 0;
@@ -57,11 +58,86 @@ public class Gramatica {
      */
     public void setValores () {
         
-        String[] alfabetoT = txtAlfabetoT.split(",");
-        String[] alfabetoNT = txtAlfabetoNT.split(",");
-        char[] regras = txtRegrasDeProducao.toCharArray(); 
-        for (int i=0; i<regras.length; i++) {
-            System.out.println(regras[i]+" ");
+        char[] alfabetoT = new char[txtAlfabetoT.length()];
+        char[] alfabetoNT = new char[txtAlfabetoNT.length()];
+        
+        for (int i = 0, j = 0; i < txtAlfabetoT.length(); i++) {
+            if (txtAlfabetoT.charAt(i) != ',') {
+                alfabetoT[j++] = txtAlfabetoT.charAt(i);
+            }
+        }
+        
+        for (int i = 0, j = 0; i < txtAlfabetoNT.length(); i++) {
+            if (txtAlfabetoNT.charAt(i) != ',') {
+                alfabetoNT[j++] = txtAlfabetoNT.charAt(i);
+            }
+        }
+       
+        for (int i = 0; i < alfabetoT.length; i++) {
+            Estado e = new Estado();
+            e.seteTerminal(true);
+            e.seteNaoTerminal(false);
+            e.setRepresentacao(alfabetoT[i]);
+            estados.add(e);
+        }
+        
+        for (int i = 0; i < alfabetoNT.length; i++) {
+            Estado e = new Estado();
+            e.seteTerminal(false);
+            e.seteNaoTerminal(true);
+            e.setRepresentacao(alfabetoNT[i]);
+            estados.add(e);
+        }
+        
+        char[] regras = new char[txtRegrasDeProducao.length()];
+        
+        for (int i = 0; i < txtRegrasDeProducao.length(); i++) {
+            regras[i] = txtRegrasDeProducao.charAt(i);
+        }
+        
+        for (int i = 0; i < regras.length; i++) {  
+                System.out.println("1");
+                if (regras[i] == ':') {
+                int x = i + 1;
+                for (int j = 0; j < estados.size(); j++) {
+                    System.out.println("2");
+                    if (regras[i+1] == estados.get(j).getRepresentacao()) {
+                        while(regras[x] != ',' && regras[x - 1] != ',') {
+                            System.out.println("3");
+                            RegraProducao r = new RegraProducao();
+                            while(regras[x] != '/' && regras[x] != ',') {
+                                System.out.println("4");
+                                for (int z = 0; z < estados.size(); z++) {
+                                    System.out.println("5");
+                                    if (regras[x] == estados.get(z).getRepresentacao()) {
+                                        r.setSimbolos(estados.get(z));
+                                        estados.get(i).setTransicoes(r);
+                                    }
+                                }
+                                x++;
+                            }
+                            x++;
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        for (int i = 0; i < estados.size(); i++) {
+            if (estados.get(i).iseTerminal()) {
+                System.out.println(estados.get(i).getRepresentacao());
+            }
+            else {
+                System.out.println(estados.get(i).getRepresentacao());
+                System.out.println("Regras: ");
+                for (int j = 0; j < estados.get(i).getRegras().size(); j++) {
+                    for (int z = 0; z < estados.get(i).getRegras().get(j).getSimbolos().size(); z++) {
+                        System.out.println(estados.get(i).getRegras().get(j).getSimbolos().get(z).getRepresentacao());
+                    }
+                    System.out.println("/");
+                }
+            }
         }
     }
 

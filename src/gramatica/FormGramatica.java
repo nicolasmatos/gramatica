@@ -92,14 +92,18 @@ public class FormGramatica extends javax.swing.JFrame {
 
         lblTransicoes.setText("Regras de Produção");
 
+        jtxtAlfabetoT.setText("a,b");
         jtxtAlfabetoT.setToolTipText("");
 
+        jtxtAlfabetoNT.setText("S,X");
         jtxtAlfabetoNT.setToolTipText("");
 
         lblEntrada.setText("Entrada");
 
+        jtxtRegrasDeProducao.setText("S:aSb/ab,X:S/ab");
         jtxtRegrasDeProducao.setToolTipText("");
 
+        jtxtEntrada.setText("aaaa");
         jtxtEntrada.setToolTipText("");
 
         jbtExecutar.setBackground(new java.awt.Color(245, 245, 245));
