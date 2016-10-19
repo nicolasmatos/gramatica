@@ -13,10 +13,10 @@ public class Gramatica {
     private String txtRegrasDeProducao;
     private String txtEntrada;
     private String[] entrada;
-    
+
     private ArrayList<Estado> estados;
 
-    public Gramatica(){}
+    public Gramatica() { }
 
     public Gramatica(String txtAlfabetoT, String txtAlfabetoNT, String txtRegrasDeProducao, String txtEntrada) {
         this.txtAlfabetoT = txtAlfabetoT;
@@ -24,6 +24,7 @@ public class Gramatica {
         this.txtRegrasDeProducao = txtRegrasDeProducao;
         this.txtEntrada = txtEntrada;
         estados = new ArrayList<Estado>();
+        entrada = txtEntrada.split(",");
 
         eIvalido = false;
         saida = 0;
@@ -32,18 +33,17 @@ public class Gramatica {
     /**
      * Verifica se a entrada recebida é válida
      */
-    public boolean verificarEntrada(){
+    public boolean verificarEntrada() {
         boolean result = false;
         String[] alfabetoT = txtAlfabetoT.split(",");
 
-        for(int i = 0; i < entrada.length; i++) {
+        for (int i = 0; i < entrada.length; i++) {
             result = false;
-            for(int j = 0; j < alfabetoT.length; j++) {
-                if(entrada[i].equals(alfabetoT[j])){
+            for (int j = 0; j < alfabetoT.length; j++) {
+                if (entrada[i].equals(alfabetoT[j])) {
                     result = true;
                     j = alfabetoT.length;
-                }
-                else if (j + 1 == alfabetoT.length && result != true) {
+                } else if (j + 1 == alfabetoT.length && result != true) {
                     i = entrada.length;
                 }
             }
@@ -52,27 +52,15 @@ public class Gramatica {
     }
 
     /**
-     * Inicializa o array de estados
-     * Inicializa o array de transições determinando as transições de cada estado
-     * Determina o estado inicial e o conjunto de estados finais
+     * Inicializa o array de estados Inicializa o array de transições
+     * determinando as transições de cada estado Determina o estado inicial e o
+     * conjunto de estados finais
      */
-    public void setValores () {
-        
-        char[] alfabetoT = new char[txtAlfabetoT.length()];
-        char[] alfabetoNT = new char[txtAlfabetoNT.length()];
-        
-        for (int i = 0, j = 0; i < txtAlfabetoT.length(); i++) {
-            if (txtAlfabetoT.charAt(i) != ',') {
-                alfabetoT[j++] = txtAlfabetoT.charAt(i);
-            }
-        }
-        
-        for (int i = 0, j = 0; i < txtAlfabetoNT.length(); i++) {
-            if (txtAlfabetoNT.charAt(i) != ',') {
-                alfabetoNT[j++] = txtAlfabetoNT.charAt(i);
-            }
-        }
-       
+    public void setValores() {
+
+        char[] alfabetoT = txtAlfabetoT.replace(",", "").toString().toCharArray();
+        char[] alfabetoNT = txtAlfabetoNT.replace(",", "").toString().toCharArray();
+
         for (int i = 0; i < alfabetoT.length; i++) {
             Estado e = new Estado();
             e.seteTerminal(true);
@@ -80,7 +68,7 @@ public class Gramatica {
             e.setRepresentacao(alfabetoT[i]);
             estados.add(e);
         }
-        
+
         for (int i = 0; i < alfabetoNT.length; i++) {
             Estado e = new Estado();
             e.seteTerminal(false);
@@ -88,74 +76,61 @@ public class Gramatica {
             e.setRepresentacao(alfabetoNT[i]);
             estados.add(e);
         }
-        
-        char[] regras = new char[txtRegrasDeProducao.length()];
-        
-        for (int i = 0; i < txtRegrasDeProducao.length(); i++) {
-            regras[i] = txtRegrasDeProducao.charAt(i);
-        }
-        
-        for (int i = 0; i < regras.length; i++) {  
-            if (regras[i] == ':') {
-                int x = i + 1;
-                for (int j = 0; j < estados.size(); j++) {
-                    System.out.println("Simbolo par atribuir regras:"+regras[i-1]);
-                    if (regras[x] == estados.get(j).getRepresentacao()) {
-                        while(regras[x] != ',' && regras[x - 1] != ',') {
-                            System.out.println("------------------");
-                            RegraProducao r = new RegraProducao();
-                            while(regras[x] != '/' && regras[x] != ',') {
-                                System.out.println("simbolo da regra: "+regras[x]);
-                                for (int z = 0; z < estados.size(); z++) {
-                                    //System.out.println("5");
-                                    if (regras[x] == estados.get(z).getRepresentacao()) {
-                                        System.out.println("Adicionou simbolo "+ regras[x]);
-                                        r.setSimbolos(estados.get(z)); 
-                                    }
-                                }
-                                x++;
-                            }
-                            System.out.println("Adicionou regra");
-                            estados.get(j).setTransicoes(r);
-                            x++;
+
+        String[] txtProducoes = txtRegrasDeProducao.split(",");
+        for (String txtEstado : txtProducoes) {
+            Estado estadoAtual = null;
+            for (Estado e : estados) {
+                if (String.valueOf(e.getRepresentacao()).equals(txtEstado.substring(0, 1))) {
+                    estadoAtual = e;
+                    break;
+                }
+            }
+
+            for (String regras : txtEstado.substring(2, txtEstado.length()).split("/")) {
+                RegraProducao regra = new RegraProducao();
+                for (char c : regras.toCharArray()) {
+                    for (Estado e : estados) {
+                        if (e.getRepresentacao() == c) {
+                            regra.setSimbolos(e);
+                            break;
                         }
                     }
                 }
-                i = x;
-                System.out.println(i);
+                estadoAtual.setTransicoes(regra);
             }
         }
         
-        
-        /*for (int i = 0; i < estados.size(); i++) {
-            if (estados.get(i).iseTerminal()) {
-                System.out.println(estados.get(i).getRepresentacao());
-            }
-            else {
-                System.out.println(estados.get(i).getRepresentacao());
-                System.out.println("Regras: ");
-                for (int j = 0; j < estados.get(i).getRegras().size(); j++) {
-                    for (int z = 0; z < estados.get(i).getRegras().get(j).getSimbolos().size(); z++) {
-                        System.out.println(estados.get(i).getRegras().get(j).getSimbolos().get(z).getRepresentacao());
+        estados.stream().forEach((e) -> {
+            if (e.iseTerminal()) {
+                System.out.println(e.getRepresentacao());
+            } else {
+                String regras = new String();
+                for (int j = 0; j < e.getRegras().size(); j++) {
+                    for (int z = 0; z < e.getRegras().get(j).getSimbolos().size(); z++) {
+                        regras = regras + e.getRegras().get(j).getSimbolos().get(z).getRepresentacao();
                     }
-                    System.out.println("/");
+                    regras = regras + ", ";
                 }
+                regras = regras.substring(0, regras.length()-2);
+                System.out.println("\n" + e.getRepresentacao() + " -> " + regras);
             }
-        }*/
+        });
     }
 
     /**
      * Verifica se a entrada leva a um estado final válido
      */
     public String verificacao() {
-        /*
+        
         this.setValores();
         String resultado = "";
-
+        
         if(!this.verificarEntrada()) {
             return resultado+="Entrada inválida!";
         }
-
+        
+        /*
         for(int i = 0; i < entrada.length; i++) {
             for(int j = 0; j < estadoAtual.getTransicoes().size(); j++) {
                 resultado+="\nEstado atual: " + estadoAtual.getRepresentacao();
