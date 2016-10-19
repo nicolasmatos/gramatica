@@ -96,35 +96,38 @@ public class Gramatica {
         }
         
         for (int i = 0; i < regras.length; i++) {  
-                System.out.println("1");
-                if (regras[i] == ':') {
+            if (regras[i] == ':') {
                 int x = i + 1;
                 for (int j = 0; j < estados.size(); j++) {
-                    System.out.println("2");
-                    if (regras[i+1] == estados.get(j).getRepresentacao()) {
+                    System.out.println("Simbolo par atribuir regras:"+regras[i-1]);
+                    if (regras[x] == estados.get(j).getRepresentacao()) {
                         while(regras[x] != ',' && regras[x - 1] != ',') {
-                            System.out.println("3");
+                            System.out.println("------------------");
                             RegraProducao r = new RegraProducao();
                             while(regras[x] != '/' && regras[x] != ',') {
-                                System.out.println("4");
+                                System.out.println("simbolo da regra: "+regras[x]);
                                 for (int z = 0; z < estados.size(); z++) {
-                                    System.out.println("5");
+                                    //System.out.println("5");
                                     if (regras[x] == estados.get(z).getRepresentacao()) {
-                                        r.setSimbolos(estados.get(z));
-                                        estados.get(i).setTransicoes(r);
+                                        System.out.println("Adicionou simbolo "+ regras[x]);
+                                        r.setSimbolos(estados.get(z)); 
                                     }
                                 }
                                 x++;
                             }
+                            System.out.println("Adicionou regra");
+                            estados.get(j).setTransicoes(r);
                             x++;
                         }
                     }
                 }
+                i = x;
+                System.out.println(i);
             }
         }
         
         
-        for (int i = 0; i < estados.size(); i++) {
+        /*for (int i = 0; i < estados.size(); i++) {
             if (estados.get(i).iseTerminal()) {
                 System.out.println(estados.get(i).getRepresentacao());
             }
@@ -138,7 +141,7 @@ public class Gramatica {
                     System.out.println("/");
                 }
             }
-        }
+        }*/
     }
 
     /**
