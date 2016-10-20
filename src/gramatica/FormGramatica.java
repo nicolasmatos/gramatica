@@ -38,6 +38,7 @@ public class FormGramatica extends javax.swing.JFrame {
         jbtExecutar = new java.awt.Button();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtxaResultado = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
 
         jTextField1.setText("jTextField1");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +93,7 @@ public class FormGramatica extends javax.swing.JFrame {
 
         lblTransicoes.setText("Regras de Produção");
 
-        jtxtAlfabetoT.setText("a,b");
+        jtxtAlfabetoT.setText("0,1,2,+,*");
         jtxtAlfabetoT.setToolTipText("");
 
         jtxtAlfabetoNT.setText("S,X");
@@ -100,10 +101,10 @@ public class FormGramatica extends javax.swing.JFrame {
 
         lblEntrada.setText("Entrada");
 
-        jtxtRegrasDeProducao.setText("S:aSb/ab,X:S/ab");
+        jtxtRegrasDeProducao.setText("S:0/1/2/SS/SXS,X:+/*");
         jtxtRegrasDeProducao.setToolTipText("");
 
-        jtxtEntrada.setText("aaaa");
+        jtxtEntrada.setText("10*20");
         jtxtEntrada.setToolTipText("");
 
         jbtExecutar.setBackground(new java.awt.Color(245, 245, 245));
@@ -118,34 +119,48 @@ public class FormGramatica extends javax.swing.JFrame {
         jtxaResultado.setRows(5);
         jScrollPane1.setViewportView(jtxaResultado);
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 576, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 276, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblAlfabeto)
-                            .addComponent(jtxtAlfabetoT, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblQtdEstados)
-                            .addComponent(jtxtAlfabetoNT, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jtxtRegrasDeProducao)
-                        .addComponent(jtxtEntrada)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblEntrada)
-                                .addComponent(lblTransicoes))
-                            .addGap(199, 199, 199))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jbtExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 0, Short.MAX_VALUE))))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblAlfabeto)
+                                    .addComponent(jtxtAlfabetoT, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblQtdEstados)
+                                    .addComponent(jtxtAlfabetoNT, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jtxtRegrasDeProducao)
+                                .addComponent(jtxtEntrada)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblEntrada)
+                                        .addComponent(lblTransicoes))
+                                    .addGap(199, 199, 199))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jbtExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -174,7 +189,9 @@ public class FormGramatica extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbtExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(485, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -189,6 +206,7 @@ public class FormGramatica extends javax.swing.JFrame {
     }//GEN-LAST:event_jFormattedTextField1ActionPerformed
 
     private void jbtExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExecutarActionPerformed
+        jtxaResultado.setText("");
         Gramatica g  = new Gramatica(jtxtAlfabetoT.getText(), jtxtAlfabetoNT.getText(), jtxtRegrasDeProducao.getText(), jtxtEntrada.getText());
         jtxaResultado.setText(g.verificacao());
     }//GEN-LAST:event_jbtExecutarActionPerformed
@@ -198,6 +216,7 @@ public class FormGramatica extends javax.swing.JFrame {
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private java.awt.Button jbtExecutar;

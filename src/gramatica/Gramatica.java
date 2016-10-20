@@ -17,7 +17,8 @@ public class Gramatica {
 
     private ArrayList<Estado> estados;
 
-    public Gramatica() { }
+    public Gramatica() {
+    }
 
     public Gramatica(String txtAlfabetoT, String txtAlfabetoNT, String txtRegrasDeProducao, String txtEntrada) {
         this.txtAlfabetoT = txtAlfabetoT;
@@ -58,7 +59,7 @@ public class Gramatica {
      * conjunto de estados finais
      */
     public void setValores() {
-        
+
         char[] alfabetoNT = txtAlfabetoNT.replace(",", "").toString().toCharArray();
         char[] alfabetoT = txtAlfabetoT.replace(",", "").toString().toCharArray();
 
@@ -69,7 +70,7 @@ public class Gramatica {
             e.setRepresentacao(alfabetoNT[i]);
             estados.add(e);
         }
-        
+
         for (int i = 0; i < alfabetoT.length; i++) {
             Estado e = new Estado();
             e.seteTerminal(true);
@@ -101,8 +102,8 @@ public class Gramatica {
                 estadoAtual.setRegras(regra);
             }
         }
-        
-        estados.stream().forEach((e) -> {
+
+        /*estados.stream().forEach((e) -> {
             if (e.iseTerminal()) {
                 System.out.println(e.getRepresentacao());
             } else {
@@ -113,77 +114,74 @@ public class Gramatica {
                     }
                     regras = regras + ", ";
                 }
-                regras = regras.substring(0, regras.length()-2);
+                regras = regras.substring(0, regras.length() - 2);
                 System.out.println("\n" + e.getRepresentacao() + " -> " + regras);
             }
-        });
+        });*/
     }
 
-    public int verificacao_rec(Estado e, String palavra) {
-        int i = 0, j = 0;
-        String representacao = new String();
-        
-        System.out.println(i+"<"+e.getRegras().size());
-        
-        while(i < e.getRegras().size()){
-            if (palavra.length() < entrada.length) {
-                if (e.iseTerminal()) {
-                    representacao = e.getRepresentacao()+"";
-                    palavra = palavra + representacao;
-                }
-                else {
-                    while (j < e.getRegras().get(i).getSimbolos().size()) {
-                        Estado estadoAtual = e.getRegras().get(i).getSimbolos().get(j);
-
-                        if (estadoAtual.iseTerminal()) {
-                            representacao = e.getRegras().get(i).getSimbolos().get(j).getRepresentacao()+"";
-                            palavra = palavra + representacao;
-                            System.out.println(palavra);
-                        }
-                        else {
-                            verificacao_rec(estadoAtual, palavra);
-                        }
-                        j++;
-                    }
-                }
+    public boolean verificacao_rec(ArrayList<Estado> palavra) {
+        if (palavra.size() == txtEntrada.length()) {
+            if (repPalavra(palavra).equals(txtEntrada)) {
+                return true;
             }
-            else if(palavra.length() == entrada.length) {
-                int ctrl = 1;
-                p = palavra.toCharArray();
-                for(i = 0; i < p.length; i++) {
-                    if(p[i] != entrada[i]){
-                        ctrl = 0;
-                    }
-                }
-                
-                if(ctrl == 1) {
-                    return 1;
-                }
-            }
-            i++;
         }
-        return 0;
-    }
-
-    /**
-     * Verifica se a entrada leva a um estado final válido
-     */
-    public String verificacao() {        
         
+        if (palavra.size() <= txtEntrada.length()) {
+            for (int i = 0; i < palavra.size(); i++) {
+                if (palavra.get(i).iseNaoTerminal()) {
+                    for (RegraProducao r : palavra.get(i).getRegras()) {
+                        ArrayList<Estado> p = (ArrayList<Estado>) palavra.clone();
+                        p.remove(palavra.get(i));
+                        for (int j = 0; j < r.getSimbolos().size(); j++) {
+                            p.add(i + j, r.getSimbolos().get(j));
+                        }
+                        
+                        System.out.println(repPalavra(p));
+                        if(verificacao_rec(p)) return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+        /**
+         * Verifica se a entrada leva a um estado final válido
+         */
+    public String verificacao() {
+
         this.setValores();
         String resultado = "";
-        String palavra = new String();
+        String palavra = "";
         palavra = "";
-        
-        if(!this.verificarEntrada()) {
-            return resultado+="Entrada inválida!";
+        boolean valido = false;
+
+        if (!this.verificarEntrada()) {
+            return resultado += "Entrada inválida!";
+        }
+
+        //System.out.println(estados.get(0).getRepresentacao());
+        for(RegraProducao rp : estados.get(0).getRegras()){
+            if(verificacao_rec(rp.getSimbolos())){
+                valido = true;
+                break;
+            }
         }
         
-        System.out.println(estados.get(0).getRepresentacao());
+        System.out.println("=========================================");
+        //return result == 1 ? "Aceitou" : "Não aceitou";
+        return valido ? "Entrada válida" : "Entrada inválida";
+    }
+
+    public String repPalavra(ArrayList<Estado> estados) {
+        String palavra = "";
         
-        int result = verificacao_rec(estados.get(0), palavra);
-        
-        return result == 1 ? "Aceitou" : "Não aceitou";
+        for (Estado e : estados) {
+            palavra += e.getRepresentacao();
+        }
+
+        return palavra;
     }
 
 }
