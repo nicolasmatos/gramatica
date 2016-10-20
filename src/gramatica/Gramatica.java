@@ -62,19 +62,19 @@ public class Gramatica {
         char[] alfabetoNT = txtAlfabetoNT.replace(",", "").toString().toCharArray();
         char[] alfabetoT = txtAlfabetoT.replace(",", "").toString().toCharArray();
 
-        for (int i = 0; i < alfabetoT.length; i++) {
-            Estado e = new Estado();
-            e.seteTerminal(true);
-            e.seteNaoTerminal(false);
-            e.setRepresentacao(alfabetoT[i]);
-            estados.add(e);
-        }
-
         for (int i = 0; i < alfabetoNT.length; i++) {
             Estado e = new Estado();
             e.seteTerminal(false);
             e.seteNaoTerminal(true);
             e.setRepresentacao(alfabetoNT[i]);
+            estados.add(e);
+        }
+        
+        for (int i = 0; i < alfabetoT.length; i++) {
+            Estado e = new Estado();
+            e.seteTerminal(true);
+            e.seteNaoTerminal(false);
+            e.setRepresentacao(alfabetoT[i]);
             estados.add(e);
         }
 
@@ -121,18 +121,24 @@ public class Gramatica {
 
     public int verificacao_rec(Estado e, String palavra) {
         int i = 0, j = 0;
+        String representacao = new String();
+        
+        System.out.println(i+"<"+e.getRegras().size());
+        
         while(i < e.getRegras().size()){
             if (palavra.length() < entrada.length) {
                 if (e.iseTerminal()) {
-                    palavra = palavra + e.getRepresentacao();
+                    representacao = e.getRepresentacao()+"";
+                    palavra = palavra + representacao;
                 }
                 else {
-
                     while (j < e.getRegras().get(i).getSimbolos().size()) {
                         Estado estadoAtual = e.getRegras().get(i).getSimbolos().get(j);
 
                         if (estadoAtual.iseTerminal()) {
-                            palavra = palavra + e.getRegras().get(i).getSimbolos().get(j).getRepresentacao();
+                            representacao = e.getRegras().get(i).getSimbolos().get(j).getRepresentacao()+"";
+                            palavra = palavra + representacao;
+                            System.out.println(palavra);
                         }
                         else {
                             verificacao_rec(estadoAtual, palavra);
@@ -166,11 +172,14 @@ public class Gramatica {
         
         this.setValores();
         String resultado = "";
-        String palavra = "";
+        String palavra = new String();
+        palavra = "";
         
         if(!this.verificarEntrada()) {
             return resultado+="Entrada inválida!";
         }
+        
+        System.out.println(estados.get(0).getRepresentacao());
         
         int result = verificacao_rec(estados.get(0), palavra);
         
