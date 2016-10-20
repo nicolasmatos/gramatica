@@ -12,7 +12,8 @@ public class Gramatica {
     private String txtAlfabetoNT;
     private String txtRegrasDeProducao;
     private String txtEntrada;
-    private String[] entrada;
+    private char[] entrada;
+    private char[] p;
 
     private ArrayList<Estado> estados;
 
@@ -24,7 +25,7 @@ public class Gramatica {
         this.txtRegrasDeProducao = txtRegrasDeProducao;
         this.txtEntrada = txtEntrada;
         estados = new ArrayList<Estado>();
-        entrada = txtEntrada.split(",");
+        entrada = txtEntrada.replace(",", "").toString().toCharArray();
 
         eIvalido = false;
         saida = 0;
@@ -35,12 +36,12 @@ public class Gramatica {
      */
     public boolean verificarEntrada() {
         boolean result = false;
-        String[] alfabetoT = txtAlfabetoT.split(",");
+        char[] alfabetoT = txtAlfabetoT.replace(",", "").toString().toCharArray();
 
         for (int i = 0; i < entrada.length; i++) {
             result = false;
             for (int j = 0; j < alfabetoT.length; j++) {
-                if (entrada[i].equals(alfabetoT[j])) {
+                if (entrada[i] == alfabetoT[j]) {
                     result = true;
                     j = alfabetoT.length;
                 } else if (j + 1 == alfabetoT.length && result != true) {
@@ -57,9 +58,9 @@ public class Gramatica {
      * conjunto de estados finais
      */
     public void setValores() {
-
-        char[] alfabetoT = txtAlfabetoT.replace(",", "").toString().toCharArray();
+        
         char[] alfabetoNT = txtAlfabetoNT.replace(",", "").toString().toCharArray();
+        char[] alfabetoT = txtAlfabetoT.replace(",", "").toString().toCharArray();
 
         for (int i = 0; i < alfabetoT.length; i++) {
             Estado e = new Estado();
@@ -97,7 +98,7 @@ public class Gramatica {
                         }
                     }
                 }
-                estadoAtual.setTransicoes(regra);
+                estadoAtual.setRegras(regra);
             }
         }
         
@@ -118,45 +119,62 @@ public class Gramatica {
         });
     }
 
+    public int verificacao_rec(Estado e, String palavra) {
+        int i = 0, j = 0;
+        while(i < e.getRegras().size()){
+            if (palavra.length() < entrada.length) {
+                if (e.iseTerminal()) {
+                    palavra = palavra + e.getRepresentacao();
+                }
+                else {
+
+                    while (j < e.getRegras().get(i).getSimbolos().size()) {
+                        Estado estadoAtual = e.getRegras().get(i).getSimbolos().get(j);
+
+                        if (estadoAtual.iseTerminal()) {
+                            palavra = palavra + e.getRegras().get(i).getSimbolos().get(j).getRepresentacao();
+                        }
+                        else {
+                            verificacao_rec(estadoAtual, palavra);
+                        }
+                        j++;
+                    }
+                }
+            }
+            else if(palavra.length() == entrada.length) {
+                int ctrl = 1;
+                p = palavra.toCharArray();
+                for(i = 0; i < p.length; i++) {
+                    if(p[i] != entrada[i]){
+                        ctrl = 0;
+                    }
+                }
+                
+                if(ctrl == 1) {
+                    return 1;
+                }
+            }
+            i++;
+        }
+        return 0;
+    }
+
     /**
      * Verifica se a entrada leva a um estado final válido
      */
-    public String verificacao() {
+    public String verificacao() {        
         
         this.setValores();
         String resultado = "";
+        String palavra = "";
         
         if(!this.verificarEntrada()) {
             return resultado+="Entrada inválida!";
         }
         
-        /*
-        for(int i = 0; i < entrada.length; i++) {
-            for(int j = 0; j < estadoAtual.getTransicoes().size(); j++) {
-                resultado+="\nEstado atual: " + estadoAtual.getRepresentacao();
-                resultado+="\nValor: " + estadoAtual.getTransicoes().get(j).getValor();
-                resultado+="\nEntrada: " + entrada[i];
-                if (estadoAtual.getTransicoes().get(j).getValor().equals(entrada[i])) {
-                    estadoAtual = estadoAtual.getTransicoes().get(j).getEstadoDest();
-                    j = estadoAtual.getTransicoes().size();
-                }
-                else if(j + 1 == estadoAtual.getTransicoes().size()) {
-                    eIvalido = true;
-                    i = entrada.length;
-                }
-                resultado+="\nEstado Destino: " + estadoAtual.getRepresentacao() + "\n";
-            }
-        }
-
-        if (estadoAtual.iseFinal() && eIvalido != true) {
-            saida = 1;
-        }
-
-        resultado+="\n" + (eIvalido ? "Estado invalido" : "Estado Final: " + estadoAtual.getRepresentacao());
-        resultado+="\nSaida: " + saida;
-        return resultado;
-        */
-        return "";
+        int result = verificacao_rec(estados.get(0), palavra);
+        
+        return result == 1 ? "Aceitou" : "Não aceitou";
     }
 
 }

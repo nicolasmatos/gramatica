@@ -27,7 +27,7 @@ public class Estado {
     public void seteNaoTerminal(boolean eNaoTerminal) { this.eNaoTerminal = eNaoTerminal; }
 
     public ArrayList<RegraProducao> getRegras() { return regras; }
-    public void setTransicoes(RegraProducao t) { this.regras.add(t); }
+    public void setRegras(RegraProducao t) { this.regras.add(t); }
 
     public char getRepresentacao() { return representacao; }
     public void setRepresentacao(char representacao) { this.representacao = representacao; }

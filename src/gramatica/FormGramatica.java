@@ -191,7 +191,6 @@ public class FormGramatica extends javax.swing.JFrame {
     private void jbtExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExecutarActionPerformed
         Gramatica g  = new Gramatica(jtxtAlfabetoT.getText(), jtxtAlfabetoNT.getText(), jtxtRegrasDeProducao.getText(), jtxtEntrada.getText());
         jtxaResultado.setText(g.verificacao());
-        g.setValores();
     }//GEN-LAST:event_jbtExecutarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
