@@ -25,8 +25,8 @@ public class Gramatica {
         this.txtAlfabetoNT = txtAlfabetoNT;
         this.txtRegrasDeProducao = txtRegrasDeProducao;
         this.txtEntrada = txtEntrada;
-        estados = new ArrayList<Estado>();
-        entrada = txtEntrada.replace(",", "").toString().toCharArray();
+        estados = new ArrayList<>();
+        entrada = txtEntrada.replace(",", "").toCharArray();
 
         eIvalido = false;
         saida = 0;
@@ -34,6 +34,8 @@ public class Gramatica {
 
     /**
      * Verifica se a entrada recebida é válida
+     *
+     * @return
      */
     public boolean verificarEntrada() {
         boolean result = false;
@@ -126,7 +128,7 @@ public class Gramatica {
                 return true;
             }
         }
-        
+
         if (palavra.size() <= txtEntrada.length()) {
             for (int i = 0; i < palavra.size(); i++) {
                 if (palavra.get(i).iseNaoTerminal()) {
@@ -136,19 +138,24 @@ public class Gramatica {
                         for (int j = 0; j < r.getSimbolos().size(); j++) {
                             p.add(i + j, r.getSimbolos().get(j));
                         }
-                        
+
                         System.out.println(repPalavra(p));
-                        if(verificacao_rec(p)) return true;
+                        if (verificacao_rec(p)) {
+                            return true;
+                        }
                     }
                 }
             }
         }
-        
+
         return false;
     }
-        /**
-         * Verifica se a entrada leva a um estado final válido
-         */
+
+    /**
+     * Verifica se a entrada leva a um estado final válido
+     *
+     * @return
+     */
     public String verificacao() {
 
         this.setValores();
@@ -162,13 +169,13 @@ public class Gramatica {
         }
 
         //System.out.println(estados.get(0).getRepresentacao());
-        for(RegraProducao rp : estados.get(0).getRegras()){
-            if(verificacao_rec(rp.getSimbolos())){
+        for (RegraProducao rp : estados.get(0).getRegras()) {
+            if (verificacao_rec(rp.getSimbolos())) {
                 valido = true;
                 break;
             }
         }
-        
+
         System.out.println("=========================================");
         //return result == 1 ? "Aceitou" : "Não aceitou";
         return valido ? "Entrada válida" : "Entrada inválida";
@@ -176,12 +183,21 @@ public class Gramatica {
 
     public String repPalavra(ArrayList<Estado> estados) {
         String palavra = "";
-        
+
         for (Estado e : estados) {
             palavra += e.getRepresentacao();
         }
 
         return palavra;
+    }
+
+    public ArrayList<Estado> getEstadosNaoTerminais() {
+        ArrayList<Estado> ent = new ArrayList<>();
+        for(Estado e : estados){
+            if(e.iseNaoTerminal()) ent.add(e);
+        }
+        
+        return ent;
     }
 
 }

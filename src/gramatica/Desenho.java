@@ -3,18 +3,30 @@ package gramatica;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class Desenho extends JPanel {
 
-    int qtdEstados;
     int centroX = 230;
     int centroY = 230;
     int raio = 100;
 
-    Estado[] estados;
+    ArrayList<Estado> estados;
 
     Color newGray = new Color(147, 145, 144);
+
+    private int getX(int i) {
+        return (i % 2 == 0) ? 144 : 432;
+    }
+
+    private int getY(int i) {
+        if (i == 0 || i == 1) {
+            return 50;
+        } else {
+            return 50 + 300 * (i / 2);
+        }
+    }
 
     /**
      * Calcula x e y para indicar onde o estado será desenhado Chama
@@ -24,25 +36,44 @@ public class Desenho extends JPanel {
      */
     @Override
     protected void paintComponent(Graphics g) {
-        g.setColor(Color.white);
-        g.fillRect(0, 0, 600, 600);
-        DesenharLinha(g);
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 20000, 20000);
+        if (estados != null) {
+            for (int i = 0; i < estados.size(); i++) {
+                g.setColor(Color.RED);
+                g.fillOval(getX(i) - 20, getY(i), 40, 40);
+
+                ArrayList<RegraProducao> rp = estados.get(i).getRegras();
+                for (int j = 0; j < rp.size(); j++) {
+                    double cosseno = Math.cos(Math.toRadians(60 + (30 * j / estados.size())));
+                    double seno = Math.sin(Math.toRadians(60 + (30 * j / estados.size())));
+
+                    int x = getX(i) - 20 + (int) (200 * cosseno);
+                    int y = getY(i) + (int) (200 * seno);
+
+                    g.fillOval(x, y, 20, 20);
+                    //g.setFont(new Font("Arial", Font.PLAIN, 12));
+                    //g.drawString(representacao + "", x + ((representacao < 10) ? 6 : 3), y + 15);
+                }
+            }
+        }
+
+        /*g.setColor(Color.white);
+        //DesenharLinha(g);
         
         g.setColor(Color.RED);
-        g.fillOval(centroX, centroY, 40, 40);
-        
-        
-        for (int i = 1; i < qtdEstados + 1; i++) {
+        g.fillOval(centroX, centroY, 40, 40);*/
+ /*for (int i = 1; i < estados.size() + 1; i++) {
 
-            double cosseno = Math.cos(Math.toRadians(45 + (90 * i / qtdEstados)));
-            double seno = Math.sin(Math.toRadians(45 + (90 * i / qtdEstados)));
+            double cosseno = Math.cos(Math.toRadians(45 + (90 * i / estados.size())));
+            double seno = Math.sin(Math.toRadians(45 + (90 * i / estados.size())));
 
             int x = centroX + (int) (raio * cosseno);
             int y = centroY + (int) (raio * seno);
 
             DesenharEstados(g, i, x, y);
         }
-        Legenda(g, 10, 10);
+        Legenda(g, 10, 10);*/
     }
 
     /**
@@ -54,18 +85,7 @@ public class Desenho extends JPanel {
      * @param y
      */
     private void DesenharEstados(Graphics g, int representacao, int x, int y) {
-        if (estados[representacao].iseFinal()) {
-            g.setColor(Color.RED);
-        } else {
-            g.setColor(newGray);
-        }
         g.fillOval(x, y, 20, 20);
-
-        if (estados[representacao].iseInicial()) {
-            g.setColor(Color.WHITE);
-        } else {
-            g.setColor(Color.DARK_GRAY);
-        }
         g.setFont(new Font("Arial", Font.PLAIN, 12));
         g.drawString(representacao + "", x + ((representacao < 10) ? 6 : 3), y + 15);
     }
@@ -77,7 +97,7 @@ public class Desenho extends JPanel {
      * @param g
      */
     private void DesenharLinha(Graphics g) {
-        if (estados != null) {
+        /*if (estados != null) {
             for (int i = 1; i < estados.length; i++) {
                 Estado e = estados[i];
                 for (int j = 0; j < e.getTransicoes().size(); j++) {
@@ -90,7 +110,7 @@ public class Desenho extends JPanel {
                     DesenharTransicoes(g, Integer.parseInt(e.getRepresentacao()), Integer.parseInt(t.getEstadoDest().getRepresentacao()));
                 }
             }
-        }
+        }*/
     }
 
     /**
@@ -102,21 +122,21 @@ public class Desenho extends JPanel {
      */
     private void DesenharTransicoes(Graphics g, int inicio, int destino) {
         String valor = "";
-        for (int i = 0; i < estados[inicio].getTransicoes().size(); i++) {
+        /*for (int i = 0; i < estados[inicio].getTransicoes().size(); i++) {
             Transicao t = estados[inicio].getTransicoes().get(i);
             if (Integer.parseInt(t.getEstadoDest().getRepresentacao()) == destino) {
                 valor = valor + t.getValor() + ", ";
             }
-        }
+        }*/
         valor = valor.substring(0, valor.length() - 2);
 
         int xInicio, yInicio, xDestino, yDestino;
 
-        double cossenoInicio = Math.cos(Math.toRadians(360 * inicio / qtdEstados));
-        double senoInicio = Math.sin(Math.toRadians(360 * inicio / qtdEstados));
+        double cossenoInicio = Math.cos(Math.toRadians(360 * inicio / estados.size()));
+        double senoInicio = Math.sin(Math.toRadians(360 * inicio / estados.size()));
 
-        double cossenoDestino = Math.cos(Math.toRadians(360 * destino / qtdEstados));
-        double senoDestino = Math.sin(Math.toRadians(360 * destino / qtdEstados));
+        double cossenoDestino = Math.cos(Math.toRadians(360 * destino / estados.size()));
+        double senoDestino = Math.sin(Math.toRadians(360 * destino / estados.size()));
 
         xInicio = centroX + (int) (raio * cossenoInicio);
         yInicio = centroY + (int) (raio * senoInicio);
@@ -139,11 +159,11 @@ public class Desenho extends JPanel {
     private void Linha(Graphics g, int inicio, int destino) {
         int xInicio, yInicio, xDestino, yDestino;
 
-        double cossenoInicio = Math.cos(Math.toRadians(360 * inicio / qtdEstados));
-        double senoInicio = Math.sin(Math.toRadians(360 * inicio / qtdEstados));
+        double cossenoInicio = Math.cos(Math.toRadians(360 * inicio / estados.size()));
+        double senoInicio = Math.sin(Math.toRadians(360 * inicio / estados.size()));
 
-        double cossenoDestino = Math.cos(Math.toRadians(360 * destino / qtdEstados));
-        double senoDestino = Math.sin(Math.toRadians(360 * destino / qtdEstados));
+        double cossenoDestino = Math.cos(Math.toRadians(360 * destino / estados.size()));
+        double senoDestino = Math.sin(Math.toRadians(360 * destino / estados.size()));
 
         xInicio = centroX + (int) (raio * cossenoInicio);
         yInicio = centroY + (int) (raio * senoInicio);
@@ -162,8 +182,8 @@ public class Desenho extends JPanel {
      * @param estado
      */
     private void Arco(Graphics g, int estado) {
-        double cosseno = Math.cos(Math.toRadians(360 * estado / qtdEstados));
-        double seno = Math.sin(Math.toRadians(360 * estado / qtdEstados));
+        double cosseno = Math.cos(Math.toRadians(360 * estado / estados.size()));
+        double seno = Math.sin(Math.toRadians(360 * estado / estados.size()));
 
         int x = centroX + (int) (raio * cosseno);
         int y = centroY + (int) (raio * seno);
@@ -197,11 +217,7 @@ public class Desenho extends JPanel {
 
     }
 
-    public void setQtdEstados(int qtdEstados) {
-        this.qtdEstados = qtdEstados;
-    }
-
-    public void setEstados(Estado[] estados) {
+    public void setEstados(ArrayList<Estado> estados) {
         this.estados = estados;
     }
 

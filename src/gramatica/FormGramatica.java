@@ -1,6 +1,7 @@
 package gramatica;
 
 import gramatica.Gramatica;
+import java.awt.Dimension;
 
 public class FormGramatica extends javax.swing.JFrame {
 
@@ -38,7 +39,8 @@ public class FormGramatica extends javax.swing.JFrame {
         jbtExecutar = new java.awt.Button();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtxaResultado = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jpDesenho = new Desenho();
 
         jTextField1.setText("jTextField1");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -119,26 +121,32 @@ public class FormGramatica extends javax.swing.JFrame {
         jtxaResultado.setRows(5);
         jScrollPane1.setViewportView(jtxaResultado);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jpDesenho.setPreferredSize(new java.awt.Dimension(576, 500));
+
+        javax.swing.GroupLayout jpDesenhoLayout = new javax.swing.GroupLayout(jpDesenho);
+        jpDesenho.setLayout(jpDesenhoLayout);
+        jpDesenhoLayout.setHorizontalGroup(
+            jpDesenhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 576, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 276, Short.MAX_VALUE)
+        jpDesenhoLayout.setVerticalGroup(
+            jpDesenhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
+
+        jScrollPane2.setViewportView(jpDesenho);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,7 +169,7 @@ public class FormGramatica extends javax.swing.JFrame {
                                     .addGap(0, 0, Short.MAX_VALUE))))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,8 +197,8 @@ public class FormGramatica extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbtExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -209,6 +217,11 @@ public class FormGramatica extends javax.swing.JFrame {
         jtxaResultado.setText("");
         Gramatica g  = new Gramatica(jtxtAlfabetoT.getText(), jtxtAlfabetoNT.getText(), jtxtRegrasDeProducao.getText(), jtxtEntrada.getText());
         jtxaResultado.setText(g.verificacao());
+        Desenho d = (Desenho)jpDesenho;
+        d.setEstados(g.getEstadosNaoTerminais());
+        d.setMinimumSize(new Dimension(576, 400 + 300 * (g.getEstadosNaoTerminais().size() / 2)));
+        d.repaint();
+        
     }//GEN-LAST:event_jbtExecutarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -216,10 +229,11 @@ public class FormGramatica extends javax.swing.JFrame {
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private java.awt.Button jbtExecutar;
+    private javax.swing.JPanel jpDesenho;
     private javax.swing.JTextArea jtxaResultado;
     private javax.swing.JTextField jtxtAlfabetoNT;
     private javax.swing.JTextField jtxtAlfabetoT;
