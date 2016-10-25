@@ -219,7 +219,7 @@ public class FormGramatica extends javax.swing.JFrame {
         jtxaResultado.setText(g.verificacao());
         Desenho d = (Desenho)jpDesenho;
         d.setEstados(g.getEstadosNaoTerminais());
-        d.setMinimumSize(new Dimension(576, 400 + 300 * (g.getEstadosNaoTerminais().size() / 2)));
+        d.setPreferredSize(new Dimension(576, 400 + 300 * (g.getEstadosNaoTerminais().size() / 2)));
         d.repaint();
         
     }//GEN-LAST:event_jbtExecutarActionPerformed

@@ -17,8 +17,7 @@ public class Gramatica {
 
     private ArrayList<Estado> estados;
 
-    public Gramatica() {
-    }
+    public Gramatica() { }
 
     public Gramatica(String txtAlfabetoT, String txtAlfabetoNT, String txtRegrasDeProducao, String txtEntrada) {
         this.txtAlfabetoT = txtAlfabetoT;

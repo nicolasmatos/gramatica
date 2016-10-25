@@ -10,11 +10,9 @@ public class Desenho extends JPanel {
 
     int centroX = 230;
     int centroY = 230;
-    int raio = 100;
+    int raio = 300;
 
     ArrayList<Estado> estados;
-
-    Color newGray = new Color(147, 145, 144);
 
     private int getX(int i) {
         return (i % 2 == 0) ? 144 : 432;
@@ -41,39 +39,33 @@ public class Desenho extends JPanel {
         if (estados != null) {
             for (int i = 0; i < estados.size(); i++) {
                 g.setColor(Color.RED);
-                g.fillOval(getX(i) - 20, getY(i), 40, 40);
+                DesenharEstados(g, estados.get(i).getRepresentacao(),getX(i) - 20, getY(i));
 
                 ArrayList<RegraProducao> rp = estados.get(i).getRegras();
                 for (int j = 0; j < rp.size(); j++) {
-                    double cosseno = Math.cos(Math.toRadians(60 + (30 * j / estados.size())));
-                    double seno = Math.sin(Math.toRadians(60 + (30 * j / estados.size())));
+                    double cosseno = Math.cos(Math.toRadians(60 + (90 * j / rp.size())));
+                    double seno = Math.sin(Math.toRadians(60 + (90 * j / rp.size())));
 
                     int x = getX(i) - 20 + (int) (200 * cosseno);
                     int y = getY(i) + (int) (200 * seno);
-
-                    g.fillOval(x, y, 20, 20);
-                    //g.setFont(new Font("Arial", Font.PLAIN, 12));
-                    //g.drawString(representacao + "", x + ((representacao < 10) ? 6 : 3), y + 15);
+                    
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font("Arial", Font.PLAIN, 16));
+                    g.drawString(buscarRepresentacao(rp.get(j).getSimbolos()) + "", x , y + 15);
+                    
+                    
+                    Linha(g, getX(i), getY(i), x, y);
                 }
             }
         }
-
-        /*g.setColor(Color.white);
-        //DesenharLinha(g);
-        
-        g.setColor(Color.RED);
-        g.fillOval(centroX, centroY, 40, 40);*/
- /*for (int i = 1; i < estados.size() + 1; i++) {
-
-            double cosseno = Math.cos(Math.toRadians(45 + (90 * i / estados.size())));
-            double seno = Math.sin(Math.toRadians(45 + (90 * i / estados.size())));
-
-            int x = centroX + (int) (raio * cosseno);
-            int y = centroY + (int) (raio * seno);
-
-            DesenharEstados(g, i, x, y);
+    }
+    
+    public String buscarRepresentacao(ArrayList<Estado> e) {
+        String result = "";
+        for (int i = 0; i < e.size(); i++) {
+            result = result + e.get(i).getRepresentacao();
         }
-        Legenda(g, 10, 10);*/
+        return result;
     }
 
     /**
@@ -84,10 +76,12 @@ public class Desenho extends JPanel {
      * @param x
      * @param y
      */
-    private void DesenharEstados(Graphics g, int representacao, int x, int y) {
-        g.fillOval(x, y, 20, 20);
-        g.setFont(new Font("Arial", Font.PLAIN, 12));
-        g.drawString(representacao + "", x + ((representacao < 10) ? 6 : 3), y + 15);
+    private void DesenharEstados(Graphics g, char representacao, int x, int y) {
+        g.setColor(Color.RED);
+        g.fillOval(x, y, 40, 40);
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.PLAIN, 16));
+        g.drawString(representacao + "", x + 15, y + 25);
     }
 
     /**
@@ -156,21 +150,7 @@ public class Desenho extends JPanel {
      * @param inicio
      * @param destino
      */
-    private void Linha(Graphics g, int inicio, int destino) {
-        int xInicio, yInicio, xDestino, yDestino;
-
-        double cossenoInicio = Math.cos(Math.toRadians(360 * inicio / estados.size()));
-        double senoInicio = Math.sin(Math.toRadians(360 * inicio / estados.size()));
-
-        double cossenoDestino = Math.cos(Math.toRadians(360 * destino / estados.size()));
-        double senoDestino = Math.sin(Math.toRadians(360 * destino / estados.size()));
-
-        xInicio = centroX + (int) (raio * cossenoInicio);
-        yInicio = centroY + (int) (raio * senoInicio);
-
-        xDestino = centroX + (int) (raio * cossenoDestino);
-        yDestino = centroY + (int) (raio * senoDestino);
-
+    private void Linha(Graphics g, int xInicio, int yInicio, int xDestino, int yDestino) {
         g.setColor(Color.DARK_GRAY);
         g.drawLine(xInicio + 10, yInicio + 10, xDestino + 10, yDestino + 10);
     }
@@ -190,31 +170,6 @@ public class Desenho extends JPanel {
 
         g.setColor(Color.DARK_GRAY);
         g.drawArc(x - 10, y - 30, 40, 40, 240, -300);
-    }
-
-    /**
-     * Desenha a legenda do autômato na janela
-     *
-     * @param g
-     * @param x
-     * @param y
-     */
-    private void Legenda(Graphics g, int x, int y) {
-        g.setColor(newGray);
-        g.fillRect(x + 2, y, 18, 18);
-        g.setColor(Color.WHITE);
-        g.drawString("1", x + 7, y + 14);
-        g.setColor(Color.BLACK);
-        g.drawString("Texto Branco -> Estado Inicial", x + 25, y + 14);
-        g.setColor(newGray);
-        g.fillOval(x, y + 25, 20, 20);
-        g.setColor(Color.BLACK);
-        g.drawString("Estados", x + 25, y + 40);
-        g.setColor(Color.RED);
-        g.fillOval(x, y + 50, 20, 20);
-        g.setColor(Color.BLACK);
-        g.drawString("Estados Finais", x + 25, y + 65);
-
     }
 
     public void setEstados(ArrayList<Estado> estados) {
