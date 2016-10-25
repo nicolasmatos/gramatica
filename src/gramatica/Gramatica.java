@@ -31,6 +31,15 @@ public class Gramatica {
         saida = 0;
     }
 
+    public boolean verificaNaoTerminal(ArrayList<Estado> e) {
+        for (int i = 0; i < e.size(); i++) {
+            if (e.get(i).iseNaoTerminal()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * Verifica se a entrada recebida é válida
      *
@@ -165,6 +174,10 @@ public class Gramatica {
 
         if (!this.verificarEntrada()) {
             return resultado += "Entrada inválida!";
+        }
+        
+        if (!this.verificaNaoTerminal(estados)) {
+            return resultado += "A gramática necessita de pelo menos um estado não terminal!";
         }
 
         //System.out.println(estados.get(0).getRepresentacao());
