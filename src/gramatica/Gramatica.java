@@ -40,6 +40,31 @@ public class Gramatica {
         return false;
     }
     
+    public boolean verificaTerminal(ArrayList<Estado> e) {
+        for (int i = 0; i < e.size(); i++) {
+            if (e.get(i).iseTerminal()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean verificaRegras(ArrayList<Estado> e) {
+        int controle = 0;
+        for (int i = 0; i < e.size(); i++) {
+            if (e.get(i).iseNaoTerminal()) {
+                if(e.get(i).getRegras().size() > 0)
+                    controle = 1;
+                else
+                    return false;
+            }
+        }
+        if(controle == 1)
+            return true;
+        else
+            return false;
+    }   
+    
     /**
      * Verifica se a entrada recebida é válida
      *
@@ -88,46 +113,32 @@ public class Gramatica {
             e.setRepresentacao(alfabetoT[i]);
             estados.add(e);
         }
-
-        String[] txtProducoes = txtRegrasDeProducao.split(",");
-        for (String txtEstado : txtProducoes) {
-            Estado estadoAtual = null;
-            for (Estado e : estados) {
-                if (String.valueOf(e.getRepresentacao()).equals(txtEstado.substring(0, 1))) {
-                    estadoAtual = e;
-                    break;
+        
+        if(alfabetoNT.length != 0){
+            String[] txtProducoes = txtRegrasDeProducao.split(",");
+            for (String txtEstado : txtProducoes) {
+                Estado estadoAtual = null;
+                for (Estado e : estados) {
+                    if (String.valueOf(e.getRepresentacao()).equals(txtEstado.substring(0, 1))) {
+                        estadoAtual = e;
+                        break;
+                    }
                 }
-            }
 
-            for (String regras : txtEstado.substring(2, txtEstado.length()).split("/")) {
-                RegraProducao regra = new RegraProducao();
-                for (char c : regras.toCharArray()) {
-                    for (Estado e : estados) {
-                        if (e.getRepresentacao() == c) {
-                            regra.setSimbolos(e);
-                            break;
+                for (String regras : txtEstado.substring(2, txtEstado.length()).split("/")) {
+                    RegraProducao regra = new RegraProducao();
+                    for (char c : regras.toCharArray()) {
+                        for (Estado e : estados) {
+                            if (e.getRepresentacao() == c) {
+                                regra.setSimbolos(e);
+                                break;
+                            }
                         }
                     }
+                    estadoAtual.setRegras(regra);
                 }
-                estadoAtual.setRegras(regra);
             }
         }
-
-        /*estados.stream().forEach((e) -> {
-            if (e.iseTerminal()) {
-                System.out.println(e.getRepresentacao());
-            } else {
-                String regras = new String();
-                for (int j = 0; j < e.getRegras().size(); j++) {
-                    for (int z = 0; z < e.getRegras().get(j).getSimbolos().size(); z++) {
-                        regras = regras + e.getRegras().get(j).getSimbolos().get(z).getRepresentacao();
-                    }
-                    regras = regras + ", ";
-                }
-                regras = regras.substring(0, regras.length() - 2);
-                System.out.println("\n" + e.getRepresentacao() + " -> " + regras);
-            }
-        });*/
     }
 
     public boolean verificacao_rec(ArrayList<Estado> palavra) {
@@ -171,16 +182,23 @@ public class Gramatica {
         String palavra = "";
         palavra = "";
         boolean valido = false;
-
-        if (!this.verificarEntrada()) {
-            return resultado += "Entrada inválida!";
-        }
         
         if (!this.verificaNaoTerminal(estados)) {
             return resultado += "A gramática necessita de pelo menos um estado não terminal!";
         }
+        
+        if (!this.verificaTerminal(estados)) {
+            return resultado += "A gramática necessita de pelo menos um estado terminal!";
+        }
+        
+        if (!this.verificaRegras(estados)) {
+            return resultado += "Algum estado não terminal não possui regras!";
+        }
+        
+        if (!this.verificarEntrada()) {
+            return resultado += "Entrada inválida!";
+        }
 
-        //System.out.println(estados.get(0).getRepresentacao());
         for (RegraProducao rp : estados.get(0).getRegras()) {
             if (verificacao_rec(rp.getSimbolos())) {
                 valido = true;
@@ -190,7 +208,7 @@ public class Gramatica {
 
         System.out.println("=========================================");
         //return result == 1 ? "Aceitou" : "Não aceitou";
-        return valido ? "Entrada válida" : "Entrada inválida";
+        return valido ? "Aceitou" : "Não aceitou";
     }
 
     public String repPalavra(ArrayList<Estado> estados) {
